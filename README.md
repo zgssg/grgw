@@ -32,7 +32,7 @@ background-image: radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)
 #### Dimension
 > [![Dimension](https://pan.nianbroken.top/view.php/e2941e885d620023805e323638c2f83b.png "Dimension")](https://html5up.net/dimension "Dimension")
 
-#### 人樱花引导页
+#### 个人樱花引导页
 > 静态图
 [![个人樱花引导页静态图](https://pan.nianbroken.top/view.php/4196f84217fdea99e203b0f4686c3e9f.png "个人樱花引导页静态图")](https://www.nianbroken.top "个人樱花引导页静态图")
 
