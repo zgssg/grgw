@@ -25,8 +25,6 @@ background-image: radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)
 
 以下是原始页面与二次页面修改的对比：
 ##### 原始页面
-[![原始页面](https://nianbroken.github.io/Dimension/Dimension01.png "原始页面")](https://html5up.net/dimension "原始页面")
+[![原始页面](https://pan.nianbroken.top/view.php/e2941e885d620023805e323638c2f83b.png "原始页面")](https://html5up.net/dimension "原始页面")
 ##### 二次修改的页面
-由于GIf较大，可能加载会比较慢
-你可以直接点击图片跳转到演示站点
-[![二次修改的页面](https://nianbroken.github.io/Dimension/Dimension02.gif "二次修改的页面")](https://www.nianbroken.top/ "二次修改的页面")
+[![二次修改的页面](https://pan.nianbroken.top/view.php/af275eb41c85655550b4ede8b4215535.gif "二次修改的页面")](https://www.nianbroken.top "二次修改的页面")
