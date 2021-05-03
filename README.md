@@ -9,11 +9,13 @@ Demo：[https://www.nianbroken.top/](https://www.nianbroken.top/ "https://www.ni
 2. 将原本的背景替换为樱花背景（参考自 [fwxiaohan.github.io](https://github.com/fwxiaohan/fwxiaohan.github.io "fwxiaohan.github.io") ）
 3. 去除`<li>`标签的锚点链接，改为文本链接
 4. 去除超链接下方的横线
+
 main.css内的
 ```css
 border-bottom: dotted 1px rgba(255, 255, 255, 0.5);
 ```
 5. 去除页面中间的黑色块块
+
 main.css内的
 ```css
 background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%);
