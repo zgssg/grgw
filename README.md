@@ -2,7 +2,7 @@
 注意：
 此源码是基于 [Dimension](https://html5up.net/dimension "Dimension") 的二次修改
 
-Demo 1：[https://nianbroken.github.io/Dimension/](https://nianbroken.github.io/Dimension/ "https://nianbroken.github.io/Dimension/")
+Demo 1：[https://nianbroken.github.io/Personal_Sakura_Guide_Page/](https://nianbroken.github.io/Personal_Sakura_Guide_Page/ "https://nianbroken.github.io/Personal_Sakura_Guide_Page/")
 
 Demo 2：[https://www.nianbroken.top/](https://www.nianbroken.top/ "https://www.nianbroken.top/")
 
