@@ -27,4 +27,6 @@ background-image: radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)
 ##### 原始页面
 [![原始页面](https://nianbroken.github.io/Dimension/Dimension01.png "原始页面")](https://html5up.net/dimension "原始页面")
 ##### 二次修改的页面
+由于GIf较大，可能加载会比较慢
+你可以直接点击图片跳转到演示站点
 [![二次修改的页面](https://nianbroken.github.io/Dimension/Dimension02.gif "二次修改的页面")](https://www.nianbroken.top/ "二次修改的页面")
