@@ -9,7 +9,7 @@ Demo 2：[https://www.nianbroken.top/](https://www.nianbroken.top/ "https://www.
 ------------
 
 ### 更新日志：
-#### 1.1
+#### 1.1 - 2021年7月21日
 - 增加 **Meta Description** 优化SEO
 - 增加 **图像的 Alt 属性** 优化SEO
 - 增加 **Meta Language 标记** 优化SEO
