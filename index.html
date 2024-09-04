@@ -4,19 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Required</title>
-    <style>
-        /* 隐藏页面内容，直到验证完成 */
-        #content {
-            display: none;
-        }
-        /* 可选：使验证部分居中 */
-        #verification-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    </style>
 </head>
 <body>
 
@@ -25,21 +12,15 @@
     <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1"></div>
 </div>
 
-<!-- 页面其他内容 -->
-<div id="content">
-    <h1>Welcome to the Website!</h1>
-    <p>This content is only visible after completing verification.</p>
-    <!-- 其他页面内容 -->
-</div>
-
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         window.onloadTurnstileCallback = function(token) {
-            // 验证成功，跳转到 index1.html
+            // 验证成功后跳转到 sdy.html
+            console.log("Verification succeeded, redirecting...");
             window.location.href = 'sdy.html';
         };
-        
+
         window.onloadTurnstileErrorCallback = function() {
             alert('Verification failed, please try again.');
         };
@@ -47,7 +28,7 @@
 
     // Turnstile 回调函数
     window.onloadTurnstileCallback = function(token) {
-        // 验证成功，跳转到 index1.html
+        console.log("Verification succeeded, redirecting...");
         window.location.href = 'sdy.html';
     };
 </script>
