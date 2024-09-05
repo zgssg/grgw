@@ -66,3 +66,27 @@ h1 {
         font-size: 18px;
     }
 }
+#control-buttons {
+    margin-top: 20px;
+}
+
+#control-buttons button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin: 5px;
+    border: none;
+    background-color: #8f7a66;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+
+#control-buttons button:hover {
+    background-color: #776e65;
+}
+
+#control-buttons button:active {
+    background-color: #5d5047;
+}
