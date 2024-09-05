@@ -69,3 +69,8 @@ body {
 #control-buttons button:active {
     background-color: #5d5047;
 }
+#game-over-message {
+    font-size: 36px;
+    color: #f00;
+    margin-top: 20px;
+}
