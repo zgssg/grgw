@@ -3,18 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048 Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>五子棋</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        canvas {
+            margin: 20px auto;
+            border: 2px solid #000;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="game-board"></div>
-    <div id="score">0</div>
-    <div id="game-over-message">Game Over</div>
-    <button id="restart-button">Restart</button>
-    <button id="up-button">↑</button>
-    <button id="down-button">↓</button>
-    <button id="left-button">←</button>
-    <button id="right-button">→</button>
-    <script src="script.js"></script>
+    <h1>五子棋</h1>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <button id="resetButton">重新开始</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const boardSize = 15;
+        const cellSize = canvas.width / boardSize;
+        const pieces = [];
+        let currentPlayer = 'black';
+
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < boardSize; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * cellSize, 0);
+                ctx.lineTo(i * cellSize, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, i * cellSize);
+                ctx.lineTo(canvas.width, i * cellSize);
+                ctx.stroke();
+            }
+        }
+
+        function drawPieces() {
+            pieces.forEach(piece => {
+                ctx.beginPath();
+                ctx.arc(piece.x * cellSize + cellSize / 2, piece.y * cellSize + cellSize / 2, cellSize / 2 - 5, 0, Math.PI * 2);
+                ctx.fillStyle = piece.color;
+                ctx.fill();
+                ctx.stroke();
+            });
+        }
+
+        function checkWin(x, y) {
+            const directions = [
+                { x: 1, y: 0 }, // Horizontal
+                { x: 0, y: 1 }, // Vertical
+                { x: 1, y: 1 }, // Diagonal down-right
+                { x: 1, y: -1 } // Diagonal up-right
+            ];
+
+            for (let dir of directions) {
+                let count = 1;
+                for (let i = 1; i < 5; i++) {
+                    const newX = x + i * dir.x;
+                    const newY = y + i * dir.y;
+                    if (pieces.some(p => p.x === newX && p.y === newY && p.color === currentPlayer)) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                for (let i = 1; i < 5; i++) {
+                    const newX = x - i * dir.x;
+                    const newY = y - i * dir.y;
+                    if (pieces.some(p => p.x === newX && p.y === newY && p.color === currentPlayer)) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                if (count >= 5) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function handleClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - rect.left) / cellSize);
+            const y = Math.floor((event.clientY - rect.top) / cellSize);
+
+            if (pieces.some(p => p.x === x && p.y === y)) {
+                return; // Cell already occupied
+            }
+
+            pieces.push({ x, y, color: currentPlayer });
+            if (checkWin(x, y)) {
+                setTimeout(() => alert(`${currentPlayer === 'black' ? '黑方' : '白方'} 胜利！`), 10);
+                canvas.removeEventListener('click', handleClick);
+            } else {
+                currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+                drawBoard();
+                drawPieces();
+            }
+        }
+
+        function resetGame() {
+            pieces.length = 0;
+            currentPlayer = 'black';
+            drawBoard();
+            drawPieces();
+            canvas.addEventListener('click', handleClick);
+        }
+
+        document.getElementById('resetButton').addEventListener('click', resetGame);
+
+        resetGame();
+    </script>
 </body>
 </html>
