@@ -1,21 +1,21 @@
 const boardSize = 4;
 let board = [];
 let score = 0;
+let isGameOver = false;
 
 const gameBoard = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
+const gameOverMessage = document.getElementById('game-over-message');
 
 // Initialize the game board
 function initBoard() {
-    for (let i = 0; i < boardSize; i++) {
-        board[i] = [];
-        for (let j = 0; j < boardSize; j++) {
-            board[i][j] = 0;
-        }
-    }
+    board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+    score = 0;
+    isGameOver = false;
     addNewTile();
     addNewTile();
     drawBoard();
+    gameOverMessage.style.display = 'none';
 }
 
 // Draw the game board on the screen
@@ -96,53 +96,79 @@ function getTileColor(value) {
 
 // Move functions (combine tiles and shift them)
 function moveLeft() {
+    let moved = false;
     for (let i = 0; i < boardSize; i++) {
         let row = board[i];
+        let originalRow = [...row];
         row = compress(row);
         row = merge(row);
         row = compress(row);
         board[i] = row;
+        if (!arraysEqual(originalRow, row)) {
+            moved = true;
+        }
     }
-    addNewTile();
-    drawBoard();
+    if (moved) {
+        addNewTile();
+        drawBoard();
+        checkGameOver();
+    }
 }
 
 function moveRight() {
+    let moved = false;
     for (let i = 0; i < boardSize; i++) {
         let row = board[i].slice().reverse();
+        let originalRow = [...row];
         row = compress(row);
         row = merge(row);
         row = compress(row);
         board[i] = row.reverse();
+        if (!arraysEqual(originalRow, row)) {
+            moved = true;
+        }
     }
-    addNewTile();
-    drawBoard();
+    if (moved) {
+        addNewTile();
+        drawBoard();
+        checkGameOver();
+    }
 }
 
 function moveUp() {
+    let moved = false;
     for (let j = 0; j < boardSize; j++) {
         let column = [];
         for (let i = 0; i < boardSize; i++) {
             column.push(board[i][j]);
         }
+        let originalColumn = [...column];
         column = compress(column);
         column = merge(column);
         column = compress(column);
         for (let i = 0; i < boardSize; i++) {
             board[i][j] = column[i];
         }
+        if (!arraysEqual(originalColumn, column)) {
+            moved = true;
+        }
     }
-    addNewTile();
-    drawBoard();
+    if (moved) {
+        addNewTile();
+        drawBoard();
+        checkGameOver();
+    }
 }
 
 function moveDown() {
+    let moved = false;
     for (let j = 0; j < boardSize; j++) {
         let column = [];
         for (let i = 0; i < boardSize; i++) {
             column.push(board[i][j]);
         }
         column = column.reverse();
+        let originalColumn = [...column];
         column = compress(column);
         column = merge(column);
         column = compress(column);
@@ -150,33 +176,71 @@ function moveDown() {
         for (let i = 0; i < boardSize; i++) {
             board[i][j] = column[i];
         }
+        if (!arraysEqual(originalColumn, column)) {
+            moved = true;
+        }
     }
-    addNewTile();
-    drawBoard();
+    if (moved) {
+        addNewTile();
+        drawBoard();
+        checkGameOver();
+    }
+}
+
+// Check if the game is over
+function checkGameOver() {
+    let isOver = true;
+    for (let i = 0; i < boardSize; i++) {
+        for (let j = 0; j < boardSize; j++) {
+            if (board[i][j] === 0 ||
+                (j < boardSize - 1 && board[i][j] === board[i][j + 1]) ||
+                (i < boardSize - 1 && board[i][j] === board[i + 1][j])) {
+                isOver = false;
+                break;
+            }
+        }
+    }
+    if (isOver) {
+        isGameOver = true;
+        gameOverMessage.style.display = 'block';
+    }
+}
+
+// Helper function to check if two arrays are equal
+function arraysEqual(arr1, arr2) {
+    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 }
 
 // Button controls for mobile devices and desktop
 window.onload = function() {
     // Add click events for mobile
     document.getElementById('up-button').addEventListener('click', () => {
-        moveUp();
+        if (!isGameOver) moveUp();
     });
 
     document.getElementById('down-button').addEventListener('click', () => {
-        moveDown();
+        if (!isGameOver) moveDown();
     });
 
     document.getElementById('left-button').addEventListener('click', () => {
-        moveLeft();
+        if (!isGameOver) moveLeft();
     });
 
     document.getElementById('right-button').addEventListener('click', () => {
-        moveRight();
+        if (!isGameOver) moveRight();
     });
 
-    // Add keyboard events for desktop
-    document.addEventListener('keydown', (event) => {
-        switch (event.key) {
+    document.getElementById('restart-button').addEventListener('click', () => {
+        initBoard();
+    });
+
+    // Initialize the game
+    initBoard();
+
+    // Add keydown events for desktop
+    window.addEventListener('keydown', (e) => {
+        if (isGameOver) return;
+        switch (e.key) {
             case 'ArrowUp':
                 moveUp();
                 break;
@@ -191,9 +255,4 @@ window.onload = function() {
                 break;
         }
     });
-
-    initBoard();
 };
-
-// Start the game
-initBoard();
