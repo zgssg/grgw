@@ -50,8 +50,8 @@ body {
 }
 
 #control-buttons button {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     font-size: 24px;
     margin: 5px;
     border: none;
@@ -69,8 +69,32 @@ body {
 #control-buttons button:active {
     background-color: #5d5047;
 }
+
 #game-over-message {
     font-size: 36px;
     color: #f00;
-    margin-top: 20px;
+    margin: 20px;
+    display: none; /* 默认隐藏 */
+    font-weight: bold;
+}
+
+#restart-button {
+    width: 120px;
+    height: 50px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    background-color: #8f7a66;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+
+#restart-button:hover {
+    background-color: #776e65;
+}
+
+#restart-button:active {
+    background-color: #5d5047;
 }
