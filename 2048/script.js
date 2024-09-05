@@ -28,6 +28,7 @@ function drawBoard() {
             if (board[i][j] !== 0) {
                 cell.textContent = board[i][j];
                 cell.style.backgroundColor = getTileColor(board[i][j]);
+                cell.style.color = getTextColor(board[i][j]);
             } else {
                 cell.textContent = '';
                 cell.style.backgroundColor = '#cdc1b4';
@@ -55,6 +56,29 @@ function addNewTile() {
     board[x][y] = Math.random() < 0.9 ? 2 : 4;
 }
 
+// Return the color of the tile based on its value
+function getTileColor(value) {
+    switch (value) {
+        case 2: return '#eee4da';
+        case 4: return '#ede0c8';
+        case 8: return '#f2b179';
+        case 16: return '#f59563';
+        case 32: return '#f67c5f';
+        case 64: return '#f65e3b';
+        case 128: return '#edcf72';
+        case 256: return '#edcc61';
+        case 512: return '#edc850';
+        case 1024: return '#edc53f';
+        case 2048: return '#edc22e';
+        default: return '#3c3a32';
+    }
+}
+
+// Return the text color based on tile value
+function getTextColor(value) {
+    return value > 4 ? '#fff' : '#000'; // White text for larger numbers, black for smaller ones
+}
+
 // Compress the row/column by shifting numbers to the left
 function compress(row) {
     let newRow = row.filter(val => val !== 0);
@@ -76,22 +100,9 @@ function merge(row) {
     return row;
 }
 
-// Return the color of the tile based on its value
-function getTileColor(value) {
-    switch (value) {
-        case 2: return '#eee4da';
-        case 4: return '#ede0c8';
-        case 8: return '#f2b179';
-        case 16: return '#f59563';
-        case 32: return '#f67c5f';
-        case 64: return '#f65e3b';
-        case 128: return '#edcf72';
-        case 256: return '#edcc61';
-        case 512: return '#edc850';
-        case 1024: return '#edc53f';
-        case 2048: return '#edc22e';
-        default: return '#3c3a32';
-    }
+// Helper function to check if two arrays are equal
+function arraysEqual(arr1, arr2) {
+    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 }
 
 // Move functions (combine tiles and shift them)
@@ -187,6 +198,7 @@ function moveDown() {
     }
 }
 
+// Check if the game is
 // Check if the game is over
 function checkGameOver() {
     let isOver = true;
@@ -206,12 +218,7 @@ function checkGameOver() {
     }
 }
 
-// Helper function to check if two arrays are equal
-function arraysEqual(arr1, arr2) {
-    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
-}
-
-// Button controls for mobile devices and desktop
+// Event listeners for control buttons
 window.onload = function() {
     // Add click events for mobile
     document.getElementById('up-button').addEventListener('click', () => {
