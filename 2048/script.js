@@ -157,6 +157,7 @@ function moveDown() {
 
 // Button controls for mobile devices and desktop
 window.onload = function() {
+    // Add click events for mobile
     document.getElementById('up-button').addEventListener('click', () => {
         moveUp();
     });
@@ -171,6 +172,24 @@ window.onload = function() {
 
     document.getElementById('right-button').addEventListener('click', () => {
         moveRight();
+    });
+
+    // Add keyboard events for desktop
+    document.addEventListener('keydown', (event) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                moveUp();
+                break;
+            case 'ArrowDown':
+                moveDown();
+                break;
+            case 'ArrowLeft':
+                moveLeft();
+                break;
+            case 'ArrowRight':
+                moveRight();
+                break;
+        }
     });
 
     initBoard();
