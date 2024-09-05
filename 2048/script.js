@@ -1,7 +1,6 @@
 const boardSize = 4;
 let board = [];
 let score = 0;
-let touchStartX, touchStartY, touchEndX, touchEndY;
 
 const gameBoard = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
@@ -134,39 +133,26 @@ function moveDown() {
     addNewTile();
 }
 
-// Touch event listeners for mobile devices
-gameBoard.addEventListener('touchstart', (e) => {
-    e.preventDefault();  // Prevent default touch behavior
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-gameBoard.addEventListener('touchend', (e) => {
-    e.preventDefault();  // Prevent default touch behavior
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleGesture();
-});
-
-function handleGesture() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0) {
-            moveRight();
-        } else {
-            moveLeft();
-        }
-    } else {
-        if (deltaY > 0) {
-            moveDown();
-        } else {
-            moveUp();
-        }
-    }
+// Button controls for mobile devices and desktop
+document.getElementById('up-button').addEventListener('click', () => {
+    moveUp();
     drawBoard();
-}
+});
+
+document.getElementById('down-button').addEventListener('click', () => {
+    moveDown();
+    drawBoard();
+});
+
+document.getElementById('left-button').addEventListener('click', () => {
+    moveLeft();
+    drawBoard();
+});
+
+document.getElementById('right-button').addEventListener('click', () => {
+    moveRight();
+    drawBoard();
+});
 
 // Compress the row/column by shifting numbers to the left
 function compress(row) {
