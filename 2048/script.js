@@ -122,6 +122,7 @@ function moveLeft() {
     if (moved) {
         addNewTile();
         drawBoard();
+        console.log('Move Left performed');
         checkGameOver();
     }
 }
@@ -142,6 +143,7 @@ function moveRight() {
     if (moved) {
         addNewTile();
         drawBoard();
+        console.log('Move Right performed');
         checkGameOver();
     }
 }
@@ -167,6 +169,7 @@ function moveUp() {
     if (moved) {
         addNewTile();
         drawBoard();
+        console.log('Move Up performed');
         checkGameOver();
     }
 }
@@ -194,11 +197,11 @@ function moveDown() {
     if (moved) {
         addNewTile();
         drawBoard();
+        console.log('Move Down performed');
         checkGameOver();
     }
 }
 
-// Check if the game is
 // Check if the game is over
 function checkGameOver() {
     let isOver = true;
@@ -215,6 +218,7 @@ function checkGameOver() {
     if (isOver) {
         isGameOver = true;
         gameOverMessage.style.display = 'block';
+        console.log('Game Over');
     }
 }
 
