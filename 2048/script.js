@@ -136,11 +136,13 @@ function moveDown() {
 
 // Touch event listeners for mobile devices
 gameBoard.addEventListener('touchstart', (e) => {
+    e.preventDefault();  // Prevent default touch behavior
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
 });
 
 gameBoard.addEventListener('touchend', (e) => {
+    e.preventDefault();  // Prevent default touch behavior
     touchEndX = e.changedTouches[0].screenX;
     touchEndY = e.changedTouches[0].screenY;
     handleGesture();
