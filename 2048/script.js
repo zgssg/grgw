@@ -55,105 +55,6 @@ function addNewTile() {
     board[x][y] = Math.random() < 0.9 ? 2 : 4;
 }
 
-// Handle keyboard input for moving tiles
-document.addEventListener('keydown', handleInput);
-
-function handleInput(event) {
-    switch (event.key) {
-        case 'ArrowUp':
-            moveUp();
-            break;
-        case 'ArrowDown':
-            moveDown();
-            break;
-        case 'ArrowLeft':
-            moveLeft();
-            break;
-        case 'ArrowRight':
-            moveRight();
-            break;
-    }
-    drawBoard();
-}
-
-// Move functions (combine tiles and shift them)
-function moveLeft() {
-    for (let i = 0; i < boardSize; i++) {
-        let row = board[i];
-        row = compress(row);
-        row = merge(row);
-        row = compress(row);
-        board[i] = row;
-    }
-    addNewTile();
-}
-
-function moveRight() {
-    for (let i = 0; i < boardSize; i++) {
-        let row = board[i].slice().reverse();
-        row = compress(row);
-        row = merge(row);
-        row = compress(row);
-        board[i] = row.reverse();
-    }
-    addNewTile();
-}
-
-function moveUp() {
-    for (let j = 0; j < boardSize; j++) {
-        let column = [];
-        for (let i = 0; i < boardSize; i++) {
-            column.push(board[i][j]);
-        }
-        column = compress(column);
-        column = merge(column);
-        column = compress(column);
-        for (let i = 0; i < boardSize; i++) {
-            board[i][j] = column[i];
-        }
-    }
-    addNewTile();
-}
-
-function moveDown() {
-    for (let j = 0; j < boardSize; j++) {
-        let column = [];
-        for (let i = 0; i < boardSize; i++) {
-            column.push(board[i][j]);
-        }
-        column = column.reverse();
-        column = compress(column);
-        column = merge(column);
-        column = compress(column);
-        column = column.reverse();
-        for (let i = 0; i < boardSize; i++) {
-            board[i][j] = column[i];
-        }
-    }
-    addNewTile();
-}
-
-// Button controls for mobile devices and desktop
-document.getElementById('up-button').addEventListener('click', () => {
-    moveUp();
-    drawBoard();
-});
-
-document.getElementById('down-button').addEventListener('click', () => {
-    moveDown();
-    drawBoard();
-});
-
-document.getElementById('left-button').addEventListener('click', () => {
-    moveLeft();
-    drawBoard();
-});
-
-document.getElementById('right-button').addEventListener('click', () => {
-    moveRight();
-    drawBoard();
-});
-
 // Compress the row/column by shifting numbers to the left
 function compress(row) {
     let newRow = row.filter(val => val !== 0);
@@ -192,6 +93,88 @@ function getTileColor(value) {
         default: return '#3c3a32';
     }
 }
+
+// Move functions (combine tiles and shift them)
+function moveLeft() {
+    for (let i = 0; i < boardSize; i++) {
+        let row = board[i];
+        row = compress(row);
+        row = merge(row);
+        row = compress(row);
+        board[i] = row;
+    }
+    addNewTile();
+    drawBoard();
+}
+
+function moveRight() {
+    for (let i = 0; i < boardSize; i++) {
+        let row = board[i].slice().reverse();
+        row = compress(row);
+        row = merge(row);
+        row = compress(row);
+        board[i] = row.reverse();
+    }
+    addNewTile();
+    drawBoard();
+}
+
+function moveUp() {
+    for (let j = 0; j < boardSize; j++) {
+        let column = [];
+        for (let i = 0; i < boardSize; i++) {
+            column.push(board[i][j]);
+        }
+        column = compress(column);
+        column = merge(column);
+        column = compress(column);
+        for (let i = 0; i < boardSize; i++) {
+            board[i][j] = column[i];
+        }
+    }
+    addNewTile();
+    drawBoard();
+}
+
+function moveDown() {
+    for (let j = 0; j < boardSize; j++) {
+        let column = [];
+        for (let i = 0; i < boardSize; i++) {
+            column.push(board[i][j]);
+        }
+        column = column.reverse();
+        column = compress(column);
+        column = merge(column);
+        column = compress(column);
+        column = column.reverse();
+        for (let i = 0; i < boardSize; i++) {
+            board[i][j] = column[i];
+        }
+    }
+    addNewTile();
+    drawBoard();
+}
+
+// Button controls for mobile devices and desktop
+window.onload = function() {
+    document.getElementById('up-button').addEventListener('click', () => {
+        moveUp();
+    });
+
+    document.getElementById('down-button').addEventListener('click', () => {
+        moveDown();
+    });
+
+    document.getElementById('left-button').addEventListener('click', () => {
+        moveLeft();
+    });
+
+    document.getElementById('right-button').addEventListener('click', () => {
+        moveRight();
+    });
+
+    initBoard();
+};
 
 // Start the game
 initBoard();
