@@ -6,6 +6,7 @@ let isGameOver = false;
 const gameBoard = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
 const gameOverMessage = document.getElementById('game-over-message');
+const restartButton = document.getElementById('restart-button');
 
 // Initialize the game board
 function initBoard() {
@@ -241,7 +242,8 @@ window.onload = function() {
         if (!isGameOver) moveRight();
     });
 
-    document.getElementById('restart-button').addEventListener('click', () => {
+    restartButton.addEventListener('click', () => {
+        console.log('Restart button clicked');
         initBoard();
     });
 
