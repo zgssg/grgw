@@ -1,100 +1,100 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #faf8ef;
-    margin: 0;
-    padding: 0;
-}
-
-#game-container {
-    margin: 20px auto;
-    width: 320px; /* 游戏框的总宽度 */
-    height: 320px; /* 游戏框的总高度 */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #faf8ef;
 }
 
 #game-board {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 10px; /* 格子之间的间距 */
+    width: 400px;
+    height: 400px;
     background-color: #bbada0;
-    border-radius: 10px;
-    padding: 10px; /* 内边距以确保格子不会紧贴边缘 */
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    width: 100%;
-    height: 100%;
+    width: 90px;
+    height: 90px;
+    margin: 5px;
     background-color: #cdc1b4;
     border-radius: 5px;
-    color: #776e65; /* 默认文字颜色 */
-}
-
-#score-container {
-    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 24px;
+    font-weight: bold;
 }
 
-#control-buttons {
-    margin-top: 20px;
-}
-
-#control-buttons button {
-    width: 60px;
-    height: 60px;
+#score {
     font-size: 24px;
-    margin: 5px;
-    border: none;
-    background-color: #8f7a66;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-}
-
-#control-buttons button:hover {
-    background-color: #776e65;
-}
-
-#control-buttons button:active {
-    background-color: #5d5047;
+    margin-bottom: 10px;
 }
 
 #game-over-message {
     font-size: 36px;
-    color: #f00;
-    margin: 20px;
-    display: none; /* 默认隐藏 */
-    font-weight: bold;
+    color: #fff;
+    background-color: #000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button {
+    background-color: #4CAF50; /* 绿色背景 */
+    border: none;
+    color: white; /* 白色文字 */
+    padding: 10px 20px; /* 内边距 */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* 适中字体大小 */
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px; /* 圆角边框 */
 }
 
 #restart-button {
-    width: 120px;
-    height: 50px;
-    font-size: 18px;
-    margin: 10px;
-    border: none;
-    background-color: #8f7a66;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
+    position: relative;
+    top: 10px; /* 距离顶部 10px */
+    left: 50%; /* 居中 */
+    transform: translateX(-50%); /* 确保按钮居中 */
 }
 
-#restart-button:hover {
-    background-color: #776e65;
+#up-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#restart-button:active {
-    background-color: #5d5047;
+#down-button {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#left-button {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+}
+
+#right-button {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
 }
