@@ -1,6 +1,7 @@
 const boardSize = 4;
 let board = [];
 let score = 0;
+let touchStartX, touchStartY, touchEndX, touchEndY;
 
 const gameBoard = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
@@ -131,6 +132,38 @@ function moveDown() {
         }
     }
     addNewTile();
+}
+
+// Touch event listeners for mobile devices
+gameBoard.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+});
+
+gameBoard.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleGesture();
+});
+
+function handleGesture() {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+            moveRight();
+        } else {
+            moveLeft();
+        }
+    } else {
+        if (deltaY > 0) {
+            moveDown();
+        } else {
+            moveUp();
+        }
+    }
+    drawBoard();
 }
 
 // Compress the row/column by shifting numbers to the left
