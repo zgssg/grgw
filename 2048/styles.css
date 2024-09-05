@@ -90,3 +90,81 @@ h1 {
 #control-buttons button:active {
     background-color: #5d5047;
 }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #faf8ef;
+}
+
+#game-container {
+    margin: 20px auto;
+    width: 320px; /* 游戏板的总宽度 */
+    height: 320px; /* 游戏板的总高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-board {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    background-color: #cdc1b4;
+    border-radius: 5px;
+}
+
+#score-container {
+    margin: 20px;
+    font-size: 24px;
+}
+
+#control-buttons {
+    margin-top: 20px;
+}
+
+#control-buttons button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin: 5px;
+    border: none;
+    background-color: #8f7a66;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+
+#control-buttons button:hover {
+    background-color: #776e65;
+}
+
+#control-buttons button:active {
+    background-color: #5d5047;
+}
+/*调整游戏板的大小*/
+@media (max-width: 600px) {
+    #game-container {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
+
+    #game-board {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+}
