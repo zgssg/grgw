@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>余额</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .balance-box {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            border-radius: 10px;
+        }
+        input[type="number"] {
+            padding: 5px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 5px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>余额</h1>
+    <div class="balance-box">
+        <h2>当前余额: <span id="balance">0.00</span> 元</h2>
+        <input type="number" id="customBalance" placeholder="输入新余额" />
+        <button onclick="updateBalance()">更新余额</button>
+    </div>
+
+    <script>
+        function updateBalance() {
+            const balanceElement = document.getElementById("balance");
+            const customBalance = document.getElementById("customBalance").value;
+            
+            if (customBalance === "") {
+                alert("请输入新的余额！");
+                return;
+            }
+            
+            balanceElement.textContent = parseFloat(customBalance).toFixed(2);
+            document.getElementById("customBalance").value = ""; // 清空输入框
+        }
+    </script>
+</body>
+</html>
