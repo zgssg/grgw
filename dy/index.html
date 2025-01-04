@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抖音短视频解析</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            height: 120px;
+            box-sizing: border-box;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #4CAF50;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #eef9e5;
+            border-radius: 8px;
+            border: 1px solid #d1e7d1;
+            display: none;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        .author-info, .video-info, .music-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .author-info img, .music-info img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+        .video-info img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .download-btn {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>抖音短视频解析</h2>
+        <textarea id="inputText" placeholder="请粘贴包含抖音视频链接的文本"></textarea>
+        <button onclick="extractAndParse()">自动提取链接并解析视频</button>
+        <div id="result" class="result">
+            <h3>视频信息</h3>
+            <div class="author-info">
+                <h4>作者</h4>
+                <img id="authorAvatar" src="" alt="作者头像">
+                <p id="authorName"></p>
+                <p>粉丝数: <span id="followerCount"></span></p>
+                <p>个性签名: <span id="authorSignature"></span></p>
+            </div>
+
+            <div class="video-info">
+                <h4>视频标题</h4>
+                <img id="videoCover" src="" alt="视频封面">
+                <p id="videoTitle"></p>
+                <p>点赞数: <span id="likeCount"></span></p>
+                <p>评论数: <span id="commentCount"></span></p>
+                <p>分享数: <span id="shareCount"></span></p>
+                <p>收藏数: <span id="collectCount"></span></p>
+                <p>视频链接: <a id="videoLink" class="link" href="" target="_blank">点击观看</a></p>
+                <p><a id="videoDownload" class="download-btn" href="" download="douyin_video.mp4" style="display: none;">下载视频</a></p>
+            </div>
+
+            <div class="music-info">
+                <h4>配乐</h4>
+                <img id="musicAvatar" src="" alt="配乐作者头像">
+                <p id="musicTitle"></p>
+                <p>作者: <span id="musicAuthor"></span></p>
+                <p><a id="musicLink" class="link" href="" target="_blank">点击播放音乐</a></p>
+                <p><a id="musicDownload" class="download-btn" href="" download="douyin_music.m4a" style="display: none;">下载音乐</a></p>
+            </div>
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function extractAndParse() {
+            const inputText = document.getElementById('inputText').value;
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            if (!inputText) {
+                errorDiv.textContent = "请输入包含抖音视频链接的文本。";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // 使用正则表达式提取抖音视频链接
+            const regex = /https:\/\/v\.douyin\.com\/[\w]+/g;
+            const matches = inputText.match(regex);
+
+            if (matches && matches.length > 0) {
+                // 提取到的第一个视频链接
+                const videoUrl = matches[0];
+                getVideo(videoUrl); // 调用解析函数
+            } else {
+                errorDiv.textContent = "未找到有效的抖音视频链接。";
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        async function getVideo(videoUrl) {
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            try {
+                const apiUrl = `https://api.leafone.cn/api/douyin?url=${encodeURIComponent(videoUrl)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.code === 200 && data.data) {
+                    resultDiv.style.display = 'block';
+
+                    // 作者信息
+                    document.getElementById('authorAvatar').src = data.data.avatar;
+                    document.getElementById('authorName').textContent = data.data.author;
+                    document.getElementById('followerCount').textContent = data.data.follower;
+                    document.getElementById('authorSignature').textContent = data.data.signature;
+
+                    // 视频信息
+                    document.getElementById('videoCover').src = data.data.video.cover;
+                    document.getElementById('videoTitle').textContent = data.data.video.title;
+                    document.getElementById('likeCount').textContent = data.data.video.like;
+                    document.getElementById('commentCount').textContent = data.data.video.comment;
+                    document.getElementById('shareCount').textContent = data.data.video.share;
+                    document.getElementById('collectCount').textContent = data.data.video.collect;
+                    document.getElementById('videoLink').href = data.data.video.url;
+                    document.getElementById('videoLink').textContent = "点击观看";
+                    document.getElementById('videoDownload').href = data.data.video.url;
+                    document.getElementById('videoDownload').style.display = 'inline-block';
+
+                    // 配乐信息
+                    document.getElementById('musicAvatar').src = data.data.music.avatar;
+                    document.getElementById('musicTitle').textContent = data.data.music.title;
+                    document.getElementById('musicAuthor').textContent = data.data.music.author;
+                    document.getElementById('musicLink').href = data.data.music.url;
+                    document.getElementById('musicDownload').href = data.data.music.url;
+                    document.getElementById('musicDownload').style.display = 'inline-block';
+                } else {
+                    throw new Error('无法解析视频，返回数据格式不正确');
+                }
+            } catch (error) {
+                errorDiv.textContent = "解析失败，请稍后重试。";
+                errorDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
