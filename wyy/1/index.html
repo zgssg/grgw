@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌曲查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .result p {
+            margin: 5px 0;
+        }
+        .cover {
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 0;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>歌曲查询</h1>
+        
+        <label for="songName">歌曲名字:</label>
+        <input type="text" id="songName" placeholder="输入歌曲名称">
+        
+        <label for="songNumber">歌曲序号 :</label>
+        <input type="text" id="songNumber" placeholder="输入序号">
+        
+        <label for="numResults">返回数量 (可选):</label>
+        <input type="number" id="numResults" value="1" placeholder="返回数量">
+        
+        <label for="format">返回格式:</label>
+        <select id="format">
+            <option value="json">JSON</option>
+        </select>
+
+        <label for="quality">音质选择:</label>
+        <select id="quality">
+            <option value="1">默认最高音质</option>
+            <option value="2">HQ高品MP3</option>
+        </select>
+
+        <button id="fetchButton">查询歌曲</button>
+
+        <div id="result" class="result" style="display:none;">
+            <h3>歌曲信息</h3>
+            <img id="songCover" class="cover" src="" alt="歌曲封面" />
+            <p id="songTitle">歌曲名: </p>
+            <p id="songSinger">歌手: </p>
+            <a id="songLink" href="" target="_blank">点击访问歌曲</a>
+            <audio id="songAudio" controls>
+                <source id="audioSource" src="" type="audio/mpeg">
+                您的浏览器不支持音频播放。
+            </audio>
+            <pre id="songLrc">歌词: </pre>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', function() {
+            const songName = document.getElementById('songName').value;
+            const songNumber = document.getElementById('songNumber').value;
+            const numResults = document.getElementById('numResults').value;
+            const format = document.getElementById('format').value;
+            const quality = document.getElementById('quality').value;
+
+            if (!songName) {
+                alert('请输入歌曲名称');
+                return;
+            }
+
+            // 构造 API 请求的 URL
+            let apiUrl = `https://www.hhlqilongzhu.cn/api/dg_wyymusic.php?gm=${encodeURIComponent(songName)}&type=${format}&num=${numResults}`;
+            
+            if (songNumber) {
+                apiUrl += `&n=${encodeURIComponent(songNumber)}`;
+            }
+            apiUrl += `&br=${quality}`;
+
+            // 获取数据并处理
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    const songCover = document.getElementById('songCover');
+                    const songTitle = document.getElementById('songTitle');
+                    const songSinger = document.getElementById('songSinger');
+                    const songLink = document.getElementById('songLink');
+                    const songAudio = document.getElementById('songAudio');
+                    const audioSource = document.getElementById('audioSource');
+                    const songLrc = document.getElementById('songLrc');
+
+                    // 设置歌曲封面
+                    songCover.src = data.cover;
+                    songTitle.textContent = `歌曲名: ${data.title}`;
+                    songSinger.textContent = `歌手: ${data.singer}`;
+                    songLink.href = data.link;
+                    songLink.textContent = "点击访问歌曲";
+
+                    // 设置音频源
+                    audioSource.src = data.music_url;
+                    songAudio.load();
+
+                    // 显示歌词
+                    songLrc.textContent = `歌词:\n${data.lrc}`;
+
+                    resultDiv.style.display = 'block'; // 显示结果区
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('查询失败，请稍后再试。');
+                });
+        });
+    </script>
+
+</body>
+</html>
