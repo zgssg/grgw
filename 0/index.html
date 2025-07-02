@@ -1,58 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Required</title>
+    <title>验证成功页面</title>
     <style>
-        /* 隐藏页面内容，直到验证完成 */
-        #content {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
         }
-        /* 可选：使验证部分居中 */
-        #verification-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        h1 {
+            color: #4CAF50;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
+    <div class="content">
+        <h1>欢迎来到本网站！</h1>
+        <p>此内容仅在完成验证后可见。</p>
+        <p><a href="http://km.100320.top/km1" target="_blank">点击访问 km.100320.top/km1</a></p>
+    </div>
 
-<div id="verification-container">
-    <!-- Turnstile 验证 -->
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1"></div>
-</div>
-
-<!-- 页面其他内容 -->
-<div id="content">
-    <h1>Welcome to the Website!</h1>
-    <p>This content is only visible after completing verification.</p>
-    <!-- 其他页面内容 -->
-</div>
-
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        window.onloadTurnstileCallback = function(token) {
-            // 验证成功，显示页面内容
-            document.getElementById('verification-container').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-        };
-        
-        window.onloadTurnstileErrorCallback = function() {
-            alert('Verification failed, please try again.');
-        };
-    });
-
-    // Turnstile 回调函数
-    window.onloadTurnstileCallback = function(token) {
-        // 验证成功，显示页面内容
-        document.getElementById('verification-container').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    };
-</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查验证状态
+            const verificationStatus = localStorage.getItem('verificationStatus');
+            const verificationTime = localStorage.getItem('verificationTime');
+            
+            // 如果未验证或验证已过期，则跳转回验证页面
+            if (!verificationStatus || verificationStatus !== 'verified') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 检查验证时间是否有效（30分钟内）
+            if (verificationTime) {
+                const currentTime = Date.now();
+                const timeDiff = currentTime - parseInt(verificationTime);
+                
+                // 验证有效期为30分钟 (1800000毫秒)
+                if (timeDiff >= 1800000) {
+                    // 验证已过期，清除状态并跳转回验证页面
+                    localStorage.removeItem('verificationStatus');
+                    localStorage.removeItem('verificationTime');
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
+
+欢迎来到本网站！
+此内容仅在完成验证后可见。
