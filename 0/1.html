@@ -16,13 +16,32 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        /* 按钮样式 */
+        #openUrlButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100; /* 确保按钮在最上层 */
+        }
+        #openUrlButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
 
+<!-- 添加按钮在页面顶部 -->
+<button id="openUrlButton">打开网址</button>
+
 <div id="verification-container">
     <!-- Turnstile 验证 -->
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1"></div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1" data-callback="onloadTurnstileCallback"></div>
 </div>
 
 <!-- 页面其他内容 -->
@@ -30,29 +49,29 @@
     <h1>Welcome to the Website!</h1>
     <p>This content is only visible after completing verification.</p>
     <!-- 其他页面内容 -->
-    <button id="openUrlButton">打开网址</button>
 </div>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
+    // 全局定义回调函数
+    function onloadTurnstileCallback(token) {
+        // 验证成功，显示页面内容并设置验证状态为true
+        document.getElementById('verification-container').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        window.isVerified = true; // 使用全局变量
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
-        let isVerified = false; // 添加一个变量来跟踪验证状态
-
-        window.onloadTurnstileCallback = function(token) {
-            // 验证成功，显示页面内容并设置验证状态为true
-            document.getElementById('verification-container').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-            isVerified = true; // 验证成功
-        };
+        window.isVerified = false; // 全局变量
         
         window.onloadTurnstileErrorCallback = function() {
             alert('Verification failed, please try again.');
-            isVerified = false; // 验证失败
+            window.isVerified = false;
         };
 
         // 为按钮添加点击事件监听器
         document.getElementById('openUrlButton').addEventListener('click', function() {
-            if (isVerified) {
+            if (window.isVerified) {
                 window.open('http://km.100320.top/km1', '_blank');
             } else {
                 alert('请先完成人机验证！');
