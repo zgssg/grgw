@@ -30,36 +30,35 @@
     <h1>Welcome to the Website!</h1>
     <p>This content is only visible after completing verification.</p>
     <!-- 其他页面内容 -->
-    <button id="openUrlButton" style="display: none;">打开网址</button>
+    <button id="openUrlButton">打开网址</button>
 </div>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let isVerified = false; // 添加一个变量来跟踪验证状态
+
         window.onloadTurnstileCallback = function(token) {
-            // 验证成功，显示页面内容和按钮
+            // 验证成功，显示页面内容并设置验证状态为true
             document.getElementById('verification-container').style.display = 'none';
             document.getElementById('content').style.display = 'block';
-            document.getElementById('openUrlButton').style.display = 'block'; // 显示按钮
+            isVerified = true; // 验证成功
         };
         
         window.onloadTurnstileErrorCallback = function() {
             alert('Verification failed, please try again.');
+            isVerified = false; // 验证失败
         };
 
         // 为按钮添加点击事件监听器
         document.getElementById('openUrlButton').addEventListener('click', function() {
-            window.open('http://km.100320.top/km1', '_blank');
+            if (isVerified) {
+                window.open('http://km.100320.top/km1', '_blank');
+            } else {
+                alert('请先完成人机验证！');
+            }
         });
     });
-
-    // Turnstile 回调函数
-    window.onloadTurnstileCallback = function(token) {
-        // 验证成功，显示页面内容和按钮
-        document.getElementById('verification-container').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        document.getElementById('openUrlButton').style.display = 'block'; // 显示按钮
-    };
 </script>
 
 </body>
