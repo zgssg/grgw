@@ -1,113 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Required</title>
+    <title>验证成功页面</title>
     <style>
-        /* 隐藏页面内容，直到验证完成 */
-        #content {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
         }
-        /* 可选：使验证部分居中 */
-        #verification-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        h1 {
+            color: #4CAF50;
         }
-        /* 按钮样式 */
-        #openUrlButton {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            cursor: pointer;
-            z-index: 100; /* 确保按钮在最上层 */
-        }
-        #openUrlButton:hover {
-            background-color: #45a049;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
+    <div class="content">
+        <h1>欢迎来到本网站！</h1>
+        <p>此内容仅在完成验证后可见。</p>
+        <p><a href="http://km.100320.top/km1" target="_blank">点击访问 km.100320.top/km1</a></p>
+    </div>
 
-<!-- 添加按钮在页面顶部 -->
-<button id="openUrlButton">打开网址</button>
-
-<div id="verification-container">
-    <!-- Turnstile 验证 -->
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1" data-callback="onloadTurnstileCallback"></div>
-</div>
-
-<!-- 页面其他内容 -->
-<div id="content">
-    <h1>Welcome to the Website!</h1>
-    <p>This content is only visible after completing verification.</p>
-    <!-- 其他页面内容 -->
-</div>
-
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script>
-    // 全局定义回调函数
-    function onloadTurnstileCallback(token) {
-        // 验证成功，显示页面内容并设置验证状态为true
-        document.getElementById('verification-container').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        
-        // 存储验证状态到 localStorage，这样其他页面可以检查
-        localStorage.setItem('verificationStatus', 'verified');
-        localStorage.setItem('verificationTime', Date.now());
-        
-        // 自动跳转回 index.html 本身
-        window.location.href = 'index.html';
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        // 初始化验证状态
-        window.isVerified = false;
-        
-        // 检查是否已经验证过
-        const verificationStatus = localStorage.getItem('verificationStatus');
-        const verificationTime = localStorage.getItem('verificationTime');
-        
-        // 如果验证状态存在且时间不超过30分钟，则认为已验证
-        if (verificationStatus === 'verified' && verificationTime) {
-            const currentTime = Date.now();
-            const timeDiff = currentTime - parseInt(verificationTime);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查验证状态
+            const verificationStatus = localStorage.getItem('verificationStatus');
+            const verificationTime = localStorage.getItem('verificationTime');
             
-            // 验证有效期为30分钟 (1800000毫秒)
-            if (timeDiff < 1800000) {
-                window.isVerified = true;
-                // 显示已验证内容
-                document.getElementById('verification-container').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            } else {
-                // 验证已过期，清除状态
-                localStorage.removeItem('verificationStatus');
-                localStorage.removeItem('verificationTime');
-            }
-        }
-        
-        window.onloadTurnstileErrorCallback = function() {
-            alert('Verification failed, please try again.');
-            window.isVerified = false;
-        };
-
-        // 为按钮添加点击事件监听器
-        document.getElementById('openUrlButton').addEventListener('click', function() {
-            if (window.isVerified) {
+            // 如果未验证或验证已过期，则跳转回验证页面
+            if (!verificationStatus || verificationStatus !== 'verified') {
                 window.location.href = 'index.html';
-            } else {
-                alert('请先完成人机验证！');
+                return;
+            }
+            
+            // 检查验证时间是否有效（30分钟内）
+            if (verificationTime) {
+                const currentTime = Date.now();
+                const timeDiff = currentTime - parseInt(verificationTime);
+                
+                // 验证有效期为30分钟 (1800000毫秒)
+                if (timeDiff >= 1800000) {
+                    // 验证已过期，清除状态并跳转回验证页面
+                    localStorage.removeItem('verificationStatus');
+                    localStorage.removeItem('verificationTime');
+                    window.location.href = 'index.html';
+                }
             }
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
+
+欢迎来到本网站！
+此内容仅在完成验证后可见。
