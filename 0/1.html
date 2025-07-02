@@ -58,11 +58,40 @@
         // 验证成功，显示页面内容并设置验证状态为true
         document.getElementById('verification-container').style.display = 'none';
         document.getElementById('content').style.display = 'block';
-        window.isVerified = true; // 使用全局变量
+        
+        // 存储验证状态到 localStorage，这样其他页面可以检查
+        localStorage.setItem('verificationStatus', 'verified');
+        localStorage.setItem('verificationTime', Date.now());
+        
+        // 自动跳转回 index.html 本身
+        window.location.href = 'index.html';
     }
     
     document.addEventListener('DOMContentLoaded', function() {
-        window.isVerified = false; // 全局变量
+        // 初始化验证状态
+        window.isVerified = false;
+        
+        // 检查是否已经验证过
+        const verificationStatus = localStorage.getItem('verificationStatus');
+        const verificationTime = localStorage.getItem('verificationTime');
+        
+        // 如果验证状态存在且时间不超过30分钟，则认为已验证
+        if (verificationStatus === 'verified' && verificationTime) {
+            const currentTime = Date.now();
+            const timeDiff = currentTime - parseInt(verificationTime);
+            
+            // 验证有效期为30分钟 (1800000毫秒)
+            if (timeDiff < 1800000) {
+                window.isVerified = true;
+                // 显示已验证内容
+                document.getElementById('verification-container').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                // 验证已过期，清除状态
+                localStorage.removeItem('verificationStatus');
+                localStorage.removeItem('verificationTime');
+            }
+        }
         
         window.onloadTurnstileErrorCallback = function() {
             alert('Verification failed, please try again.');
@@ -72,7 +101,7 @@
         // 为按钮添加点击事件监听器
         document.getElementById('openUrlButton').addEventListener('click', function() {
             if (window.isVerified) {
-                window.open('http://km.100320.top/km1', '_blank');
+                window.location.href = 'index.html';
             } else {
                 alert('请先完成人机验证！');
             }
