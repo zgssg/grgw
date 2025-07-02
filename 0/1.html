@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Required</title>
+    <style>
+        /* 隐藏页面内容，直到验证完成 */
+        #content {
+            display: none;
+        }
+        /* 可选：使验证部分居中 */
+        #verification-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+<div id="verification-container">
+    <!-- Turnstile 验证 -->
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAis16f_oeVI0Kv1"></div>
+</div>
+
+<!-- 页面其他内容 -->
+<div id="content">
+    <h1>Welcome to the Website!</h1>
+    <p>This content is only visible after completing verification.</p>
+    <!-- 其他页面内容 -->
+    <button id="openUrlButton" style="display: none;">打开网址</button>
+</div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.onloadTurnstileCallback = function(token) {
+            // 验证成功，显示页面内容和按钮
+            document.getElementById('verification-container').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('openUrlButton').style.display = 'block'; // 显示按钮
+        };
+        
+        window.onloadTurnstileErrorCallback = function() {
+            alert('Verification failed, please try again.');
+        };
+
+        // 为按钮添加点击事件监听器
+        document.getElementById('openUrlButton').addEventListener('click', function() {
+            window.open('http://km.100320.top/km1', '_blank');
+        });
+    });
+
+    // Turnstile 回调函数
+    window.onloadTurnstileCallback = function(token) {
+        // 验证成功，显示页面内容和按钮
+        document.getElementById('verification-container').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('openUrlButton').style.display = 'block'; // 显示按钮
+    };
+</script>
+
+</body>
+</html>
